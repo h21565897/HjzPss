@@ -4,7 +4,6 @@ package com.junzhou.infop.pipeline.action;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.junzhou.infop.pipeline.BusinessProcess;
@@ -17,7 +16,6 @@ import com.junzhou.infop.pipeline.model.ContentModel;
 import com.junzhou.infop.service.api.dao.MessageTemplateDao;
 import com.junzhou.infop.service.api.domain.MessageParam;
 import com.junzhou.infop.service.api.entity.MessageTemplate;
-import com.junzhou.infop.util.MessagePlaceHolderUtil;
 import com.junzhou.infop.vo.BasicResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,17 +32,14 @@ public class AssembleAction implements BusinessProcess<SendTaskModel> {
     private static ContentModel getContentModelValue(MessageTemplate messageTemplate, MessageParam messageParam) {
         Integer sendChannel = messageTemplate.getSendChannel();
         var contentModelClass = ChannelCode.getChannelModelClassByCode(sendChannel);
-        Map<String, String> varables = messageParam.getVariables();
-        JSONObject jsonObject = JSON.parseObject(messageTemplate.getMsgContent());
+        JSONObject jsonObject = JSON.parseObject(messageParam.getMsgContent());
         //assemble contentModel with reflection
         Field[] fields = ReflectUtil.getFields(contentModelClass);
         ContentModel contentModel = ReflectUtil.newInstance(contentModelClass);
         for (var field : fields) {
             String originalField = jsonObject.getString(field.getName());
             if (StrUtil.isNotBlank(originalField)) {
-                String resultValue = MessagePlaceHolderUtil.replacePlaceHolder(originalField, varables);
-                Object resultObj = JSONUtil.isTypeJSONObject(resultValue) ? JSON.parseObject(resultValue, field.getType()) : resultValue;
-                ReflectUtil.setFieldValue(contentModel, field, resultObj);
+                ReflectUtil.setFieldValue(contentModel, field, originalField);
             }
         }
         return contentModel;
@@ -80,6 +75,7 @@ public class AssembleAction implements BusinessProcess<SendTaskModel> {
                     .sendIdType(messageTemplate.getSendIdType())
                     .sendChannelId(messageTemplate.getSendChannel())
                     .sendAccountId(messageTemplate.getSendAccountId())
+                    .userObj(sendTaskModel.getUserObj())
                     .build();
             if (StrUtil.isBlank(taskInfo.getBizId())) {
                 taskInfo.setBizId(taskInfo.getMessageId());

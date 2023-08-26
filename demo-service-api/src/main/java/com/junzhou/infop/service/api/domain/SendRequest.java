@@ -16,6 +16,6 @@ public class SendRequest {
 
     private String code;
     private Long messageTemplateId;
-
+    private String userObj;
     private MessageParam messageParam;
 }

@@ -29,14 +29,14 @@ public class Receiver {
     @KafkaListener(topics = "#{'${infop.topic.name}'}")
     public void consumer(ConsumerRecord<?, String> consumerRecord, @Header(KafkaHeaders.GROUP_ID) String topicGroupId) {
         String kafkaMessage = consumerRecord.value();
+        System.out.println("Print at Receiver");
+        System.out.println(kafkaMessage);
         if (!ObjectUtil.isEmpty(kafkaMessage)) {
             List<TaskInfo> taskInfoLists = JSON.parseArray(kafkaMessage, TaskInfo.class);
             String messageGroupId = GroupIdMappingUtils.getGroupIdByTaskInfo(CollUtil.getFirst(taskInfoLists.iterator()));
-
             if (Objects.equals(topicGroupId, messageGroupId)) {
-
+                consumeService.consume2Send(taskInfoLists);
             }
         }
-
     }
 }

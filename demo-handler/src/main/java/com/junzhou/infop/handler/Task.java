@@ -9,12 +9,14 @@ import lombok.experimental.Accessors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@Component
 public class Task implements Runnable {
 
 
@@ -25,6 +27,6 @@ public class Task implements Runnable {
 
     @Override
     public void run() {
-        handlerRouter.route(taskinfo.getSendChannelId());
+        handlerRouter.route(taskinfo.getSendChannelId()).doHandle(taskinfo);
     }
 }

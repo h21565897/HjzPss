@@ -18,6 +18,7 @@ import java.util.List;
 public class SendTaskModel implements ProcessModel {
     private Long messageTemplateId;
 
+    private String userObj;
     private List<MessageParam> messageParamList;
 
     private List<TaskInfo> taskInfo;

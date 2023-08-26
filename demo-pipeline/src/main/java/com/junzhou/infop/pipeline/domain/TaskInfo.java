@@ -18,6 +18,7 @@ import java.util.Set;
 public class TaskInfo {
     private String bizId;
 
+    private String userObj;
     private String messageId;
 
     private Long messageTemplateId;

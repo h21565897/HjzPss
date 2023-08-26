@@ -1,11 +1,9 @@
 package com.junzhou.infop.impl;
 
-import com.junzhou.infop.enums.RespStatusEnum;
 import com.junzhou.infop.pipeline.ProcessContext;
 import com.junzhou.infop.pipeline.ProcessController;
 import com.junzhou.infop.pipeline.domain.SendTaskModel;
 import com.junzhou.infop.service.api.domain.SendRequest;
-import com.junzhou.infop.service.api.domain.SendResponse;
 import com.junzhou.infop.service.api.service.SendService;
 import com.junzhou.infop.vo.BasicResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +19,14 @@ public class SendServiceImpl implements SendService {
     private ProcessController processController;
 
     @Override
-    public SendResponse send(SendRequest sendRequest) {
+    public BasicResultVo send(SendRequest sendRequest) {
         if (ObjectUtils.isEmpty(sendRequest)) {
-            return new SendResponse(RespStatusEnum.FAIL.getCode(), RespStatusEnum.FAIL.getMsg());
+            return BasicResultVo.fail("");
         }
 
         SendTaskModel sendTaskModel = SendTaskModel.builder()
                 .messageTemplateId(sendRequest.getMessageTemplateId())
+                .userObj(sendRequest.getUserObj())
                 .messageParamList(Collections.singletonList(sendRequest.getMessageParam()))
                 .build();
         ProcessContext context = ProcessContext.builder()
@@ -37,6 +36,6 @@ public class SendServiceImpl implements SendService {
                 .response(BasicResultVo.success()).build();
         processController.process(context);
 
-        return new SendResponse(context.getResponse().getStatus(), context.getResponse().getMsg());
+        return context.getResponse();
     }
 }

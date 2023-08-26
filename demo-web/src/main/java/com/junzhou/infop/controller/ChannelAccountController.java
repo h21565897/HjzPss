@@ -26,7 +26,7 @@ public class ChannelAccountController {
         return BasicResultVo.success("operation success");
     }
 
-    @GetMapping("/query/{id}")
+    @GetMapping("/{id}")
     private BasicResultVo queryById(@PathVariable("id") Long id) {
         ChannelAccount channelAccount = channelAccountService.queryById(id);
         if (ObjectUtils.isEmpty(channelAccount)) {
@@ -39,6 +39,12 @@ public class ChannelAccountController {
     private BasicResultVo list(@RequestAttribute("userObj") String userObj) {
         List<ChannelAccount> channelAccounts = channelAccountService.listAll(userObj);
         return BasicResultVo.success(channelAccounts);
+    }
+
+    @DeleteMapping("/{id}")
+    private BasicResultVo delete(@PathVariable("id") Long id) {
+        channelAccountService.deleteById(id);
+        return BasicResultVo.success();
     }
 
 }

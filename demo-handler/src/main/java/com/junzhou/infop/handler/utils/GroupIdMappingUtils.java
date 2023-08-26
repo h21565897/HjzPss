@@ -1,5 +1,6 @@
 package com.junzhou.infop.handler.utils;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.junzhou.infop.pipeline.domain.TaskInfo;
 import com.junzhou.infop.pipeline.enums.ChannelCode;
 
@@ -18,8 +19,12 @@ public class GroupIdMappingUtils {
     }
 
     public static String getGroupIdByTaskInfo(TaskInfo taskInfo) {
-        String channelCodeEn = String.valueOf(Arrays.stream(ChannelCode.values()).filter(channelCode -> Objects.equals(channelCode.getCode(), taskInfo.getSendChannelId())).findFirst().orElse(null
-        ));
-        return channelCodeEn;
+        ChannelCode channelCode1 = Arrays.stream(ChannelCode.values()).filter(channelCode -> Objects.equals(channelCode.getCode(), taskInfo.getSendChannelId())).findFirst().orElse(null
+        );
+        if (!ObjectUtil.isEmpty(channelCode1)) {
+            return channelCode1.getEN();
+        }
+
+        return "Error";
     }
 }

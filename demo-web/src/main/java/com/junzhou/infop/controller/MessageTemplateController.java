@@ -28,7 +28,7 @@ public class MessageTemplateController {
         return BasicResultVo.success("operation success");
     }
 
-    @GetMapping("query/{id}")
+    @GetMapping("/{id}")
     public BasicResultVo queryById(@PathVariable("id") Long id) {
         MessageTemplate messageTemplate = messageTemplateService.queryById(id);
         if (Objects.isNull(messageTemplate)) {
@@ -37,9 +37,10 @@ public class MessageTemplateController {
         return BasicResultVo.success(messageTemplate);
     }
 
-    @DeleteMapping("delete/{id}")
-    public void deleteByIds(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public BasicResultVo deleteById(@PathVariable("id") Long id) {
         messageTemplateService.deleteById(id);
+        return BasicResultVo.success();
     }
 
     @GetMapping("/list")

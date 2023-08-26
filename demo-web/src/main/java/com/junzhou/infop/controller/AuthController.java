@@ -1,5 +1,6 @@
 package com.junzhou.infop.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.junzhou.infop.auth.JWTHelper;
 import com.junzhou.infop.service.api.dao.UserAccountDao;
 import com.junzhou.infop.service.api.entity.UserAccount;
@@ -39,5 +40,20 @@ public class AuthController {
         Map<String, String> loginResponse = new HashMap<>();
         loginResponse.put("access_token", jwtHelper.generateToken(userAccount.getUsername(), new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)));
         return BasicResultVo.success(loginResponse);
+    }
+
+    @PostMapping("/register")
+    private BasicResultVo register(@RequestBody Map<String, String> registerData) {
+        String username = registerData.get("username");
+        String password = registerData.get("password");
+        if (ObjectUtil.isEmpty(username) || ObjectUtil.isEmpty(password)) {
+            return BasicResultVo.fail("bad request parameter");
+        }
+        Optional<UserAccount> userAccountOptional = userAccountDao.findByUsername(username);
+        if (userAccountOptional.isPresent()) {
+            return BasicResultVo.fail("user already Exists");
+        }
+        userAccountDao.save(UserAccount.builder().username(username).password(password).build());
+        return BasicResultVo.success();
     }
 }

@@ -1,6 +1,7 @@
 package com.junzhou.infop.pipeline.action;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.junzhou.infop.pipeline.BusinessProcess;
 import com.junzhou.infop.pipeline.ProcessContext;
 import com.junzhou.infop.pipeline.domain.SendTaskModel;
@@ -9,6 +10,7 @@ import com.junzhou.infop.vo.BasicResultVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PreParamCheckAction implements BusinessProcess<SendTaskModel> {
@@ -26,8 +28,8 @@ public class PreParamCheckAction implements BusinessProcess<SendTaskModel> {
             return;
         }
         //filter those receiver = null
-        List<MessageParam> filteredMessageParamList = messageParamList.stream().filter((template) -> (!template.getReceiver().isBlank())).toList();
-        if (CollUtil.isEmpty(filteredMessageParamList)) {
+        List<MessageParam> filteredMessageParamList = messageParamList.stream().filter((template) -> !ObjectUtil.isEmpty(template.getReceiver())).collect(Collectors.toList());
+        if (ObjectUtil.isEmpty(filteredMessageParamList)) {
             context.setNeedBreak(true).setResponse(BasicResultVo.fail("All receivers in templates are wrong"));
             return;
         }

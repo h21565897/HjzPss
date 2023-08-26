@@ -9,10 +9,10 @@ import org.springframework.kafka.config.TopicBuilder;
 public class kafkaConfig {
     @Bean
     public NewTopic topic1() {
-        return TopicBuilder.name("thing1")
-                .partitions(1)
-                .replicas(1)
-                .compact()
-                .build();
+        return TopicBuilder.name("thing1").partitions(1).replicas(1).compact().build();
+    }
+
+    public NewTopic topic2() {
+        return TopicBuilder.name("austinBusiness").partitions(1).replicas(1).compact().build();
     }
 }

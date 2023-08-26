@@ -36,6 +36,6 @@ public class ChannelAccountServiceImpl implements ChannelAccountService {
 
     @Override
     public void deleteById(Long id) {
-
+        channelAccountDao.deleteById(id);
     }
 }

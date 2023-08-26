@@ -1,4 +1,4 @@
-package com.junzhou.infop.util;
+package com.junzhou.infop.utils;
 
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.StringUtils;
