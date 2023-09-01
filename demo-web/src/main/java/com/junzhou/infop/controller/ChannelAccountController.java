@@ -1,5 +1,6 @@
 package com.junzhou.infop.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.junzhou.infop.service.ChannelAccountService;
 import com.junzhou.infop.service.api.entity.ChannelAccount;
@@ -18,9 +19,10 @@ public class ChannelAccountController {
     ChannelAccountService channelAccountService;
 
     @PostMapping("/save")
-    private BasicResultVo saveOrUpdate(@RequestBody ChannelAccount channelAccount, @RequestAttribute("userObj") String userObj) {
+    private BasicResultVo saveOrUpdate(@RequestBody ChannelAccount channelAccount) {
+        String userEmail = (String) StpUtil.getExtra("email");
         if (ObjectUtil.isEmpty(channelAccount.getCreator())) {
-            channelAccount.setCreator(userObj);
+            channelAccount.setCreator(userEmail);
         }
         channelAccountService.saveOrUpdate(channelAccount);
         return BasicResultVo.success("operation success");
@@ -36,8 +38,9 @@ public class ChannelAccountController {
     }
 
     @GetMapping("/list")
-    private BasicResultVo list(@RequestAttribute("userObj") String userObj) {
-        List<ChannelAccount> channelAccounts = channelAccountService.listAll(userObj);
+    private BasicResultVo list() {
+        String userEmail = (String) StpUtil.getExtra("email");
+        List<ChannelAccount> channelAccounts = channelAccountService.listAll(userEmail);
         return BasicResultVo.success(channelAccounts);
     }
 

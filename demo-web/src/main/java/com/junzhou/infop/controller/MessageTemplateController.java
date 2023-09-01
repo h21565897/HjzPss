@@ -1,6 +1,7 @@
 package com.junzhou.infop.controller;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.junzhou.infop.service.MessageTemplateService;
 import com.junzhou.infop.service.api.entity.MessageTemplate;
@@ -19,11 +20,13 @@ public class MessageTemplateController {
     private MessageTemplateService messageTemplateService;
 
     @PostMapping("/save")
-    public BasicResultVo saveOrUpdate(@RequestBody MessageTemplate messageTemplate, @RequestAttribute("userObj") String userObj) {
+    public BasicResultVo saveOrUpdate(@RequestBody MessageTemplate messageTemplate) {
+        
+        String userEmail = (String) StpUtil.getExtra("email");
         if (ObjectUtil.isEmpty(messageTemplate.getCreator())) {
-            messageTemplate.setCreator(userObj);
+            messageTemplate.setCreator(userEmail);
         }
-        messageTemplate.setUpdator(userObj);
+        messageTemplate.setUpdator(userEmail);
         messageTemplateService.saveOrUpdate(messageTemplate);
         return BasicResultVo.success("operation success");
     }
@@ -44,8 +47,8 @@ public class MessageTemplateController {
     }
 
     @GetMapping("/list")
-    public BasicResultVo list(@RequestAttribute("userObj") String userObj) {
-
-        return BasicResultVo.success(messageTemplateService.listAll(userObj));
+    public BasicResultVo list() {
+        String userEmail = (String) StpUtil.getExtra("email");
+        return BasicResultVo.success(messageTemplateService.listAll(userEmail));
     }
 }
