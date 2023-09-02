@@ -19,7 +19,7 @@ public class LogUtils {
 
     @Autowired
     SendMqService sendMqService;
-    @Value("${junzhou.infop.log.topic.name:infopLog}")
+    @Value("${infop.log.topic.name:infopLog}")
     private String topicName;
 
     public void print(AnchorInfo anchorInfo) {

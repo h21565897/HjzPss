@@ -1,6 +1,7 @@
 package com.junzhou.infop.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,12 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        // Here you can specify the paths that you want Spring Security to ignore.
-//        // Replace "/api/**" with the actual paths that you want to ignore.
-//        web.ignoring().antMatchers("/api/**");
-//    }
+    @Value("${infop.front:localhost:8080}")
+    private String frontAddress;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 OAuth2User user = (OAuth2User) authentication.getPrincipal();
                 String token = (String) user.getAttributes().get("token");
 
-                response.sendRedirect("http://localhost:3000/oauth2?token=" + token);
+                response.sendRedirect(frontAddress + "/oauth2?token=" + token);
             }
         });
     }
