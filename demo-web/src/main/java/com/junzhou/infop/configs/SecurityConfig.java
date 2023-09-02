@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
 
-    @Value("${infop.front:localhost:8080}")
+    @Value("${infop.front:localhost:3000}")
     private String frontAddress;
 
     @Override
