@@ -4,21 +4,19 @@
   <img src="https://github.com/hjzccc/SkyWire/assets/62277434/5345b9c7-ff60-47f7-aa90-bb44c6d636e0" alt="SkyWire">
 </p>
 
+<p align="center">
+  <em>SkyWire is a top-of-the-line, cloud-based message delivery platform. It empowers users to send a variety of message types to their customers or colleagues, all with unparalleled efficiency and scalability.</em>
+</p>
+
 ---
 
-SkyWire is a top-of-the-line, cloud-based message delivery platform. It empowers users to send a variety of message types to their customers or colleagues, all with unparalleled efficiency and scalability.
+<h2 align="center">🔧 Technical Stack</h2>
 
-<details open>
-<summary><b>🔧 Technical Stack</b></summary>
-
-- 🗃 **Storage:** 
-  - MariaDB,Redis
-- 🖥 **Backend:** 
-  - Java,Springboot
-- 🛠 **Other services:** 
-  - Flink,Kafka
-- 🚀 **Deployments:**
-  - Google GKE, Kubernetes,Docker
-</details>
+<p>
+   <b>Storage:</b> 🗄 MariaDB, 🔴 Redis <br>
+   <b>Backend:</b> ☕ Java, 🌱 Springboot <br>
+   <b>Other services:</b> 🌊 Flink, 🐦 Kafka <br>
+   <b>Deployments:</b> 🌐 Google GKE, ⛴ Kubernetes, 🐳 Docker
+</p>
 
 ---
